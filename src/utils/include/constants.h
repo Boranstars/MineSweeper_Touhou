@@ -63,4 +63,17 @@ struct LevelCustom : GameLevel
 
 };
 
+struct GameObjectProperties
+{
+    struct SceneProperties
+    {
+
+    };
+
+    struct MineUnitProperties
+    {
+        static constexpr int SIZE = 26;
+    };
+};
+
 #endif //CONSTANTS_H

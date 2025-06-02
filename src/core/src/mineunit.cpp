@@ -55,6 +55,16 @@ void MineUnit::setMistaken(const bool mistaken)
     this->mistaken = mistaken;
 }
 
+bool MineUnit::isTouched() const
+{
+    return touched;
+}
+
+void MineUnit::setTouched()
+{
+    this->touched = true;
+}
+
 void MineUnit::addNumber()
 {
     // 如果原来为UnitType::EMPTY，则更新状态，这样无论如何都为数字

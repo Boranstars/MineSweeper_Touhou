@@ -55,6 +55,9 @@ void GameBoard::revealMines(int row, int col)
         mineMap[row][col].setCovered(false);
         if (mineMap[row][col].getUnitType() == UnitType::MINE)
         {
+            // 当前设置为触碰到雷
+            mineMap[row][col].setTouched();
+
             for (int i = 0; i < rows; ++i) {
                 for (int j = 0; j < cols; ++j) {
                     if (mineMap[i][j].getUnitType() == UnitType::MINE && !mineMap[i][j].isMarked()) {
@@ -176,12 +179,12 @@ GameBoard::GameBoard(
     firstClick(true)
 {
     qDebug() << "GameBoard with params called";
-    reset(rows, cols, mines);
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]()
     {
         elapsedTime++;
     } );
+    reset(rows, cols, mines);
 
 }
 
@@ -206,7 +209,10 @@ void GameBoard::reset(int rows, int cols, int mines)
     this->gameStatus = GameStatus::PLAYING;
     this->firstClick = true;
     this->elapsedTime = 0;
-    this->timer->stop();
+    if (this->timer->isActive())
+    {
+        timer->stop();
+    }
 
     this->mineMap.resize(rows);
     for (int i = 0; i < rows; i++)

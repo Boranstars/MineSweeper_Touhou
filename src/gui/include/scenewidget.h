@@ -6,7 +6,7 @@
 #define SCENCEWIDGET_H
 
 #include <QWidget>
-
+#include <QPainter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class SceneWidget; }
@@ -18,6 +18,9 @@ Q_OBJECT
 public:
     explicit SceneWidget(QWidget *parent = nullptr);
     ~SceneWidget() override;
+
+protected:
+void paintEvent(QPaintEvent* event) override;
 
 private:
     Ui::SceneWidget *ui;

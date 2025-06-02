@@ -19,6 +19,7 @@ private:
     bool covered;
     bool marked;
     bool mistaken;
+    bool touched;
 
 public:
     [[nodiscard]] UnitType getUnitType() const;
@@ -31,6 +32,8 @@ public:
     void setMarked(bool marked);
     [[nodiscard]] bool isMistaken() const;
     void setMistaken(bool mistaken);
+    [[nodiscard]] bool isTouched() const;
+    void setTouched();
 
     void addNumber();
     void setAsMineUnit();
