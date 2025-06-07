@@ -4,6 +4,12 @@
 
 #include "gameboard.h"
 
+using MineSweeperTouHou::LevelEasy;
+using MineSweeperTouHou::LevelNormal;
+using MineSweeperTouHou::LevelHard;
+using MineSweeperTouHou::Difficulty;
+using MineSweeperTouHou::TIME_INTERVAL;
+
 void GameBoard::placeMines(int firstRow, int firstCol) {
     // 清空地雷位置
     minesLocations.clear();
@@ -227,6 +233,7 @@ void GameBoard::reset(int rows, int cols, int mines)
 
 void GameBoard::setDifficulty(Difficulty difficulty)
 {
+
     switch (difficulty)
     {
         case Difficulty::EASY:
@@ -255,8 +262,18 @@ void GameBoard::pause()
     if (gameStatus == GameStatus::PLAYING) {
         gameStatus = GameStatus::PAUSED;
         timer->stop();
-    } else if (gameStatus == GameStatus::PAUSED) {
+    }
+}
+
+void GameBoard::unpause()
+{
+    if (gameStatus == GameStatus::PAUSED) {
         gameStatus = GameStatus::PLAYING;
         timer->start(TIME_INTERVAL);
     }
+}
+
+const MineUnit& GameBoard::getUnitAt(const int row, const int col) const
+{
+    return this->mineMap[row][col];
 }

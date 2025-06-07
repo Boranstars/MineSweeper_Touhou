@@ -31,7 +31,7 @@ private:
     MineMap mineMap;
     int rows{}, cols{};
     int mineInitCount{}, flags{};
-    Difficulty difficulty;
+    MineSweeperTouHou::Difficulty difficulty;
     GameStatus gameStatus;
     bool firstClick;
     QTimer *timer;
@@ -63,8 +63,10 @@ public:
 
 public:
     void reset(int rows, int cols, int mines);
-    void setDifficulty(Difficulty difficulty);
+    void setDifficulty(MineSweeperTouHou::Difficulty difficulty);
     void pause();
+    void unpause();
+    [[nodiscard]] const MineUnit& getUnitAt(int row, int col) const;
 
 };
 
