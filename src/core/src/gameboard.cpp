@@ -177,9 +177,9 @@ bool GameBoard::isWin() const
 }
 
 GameBoard::GameBoard(
-    int rows = LevelEasy::ROWS,
-    int cols = LevelEasy::COLS,
-    int mines = LevelEasy::MINES_COUNT,
+    int rows ,
+    int cols ,
+    int mines ,
     QObject* parent) :
     QObject(parent), rows(rows), cols(cols),mineInitCount(mines),flags(mines),difficulty(Difficulty::EASY),gameStatus(GameStatus::PLAYING),
     firstClick(true)

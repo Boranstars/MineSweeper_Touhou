@@ -68,7 +68,7 @@ void MineUnit::setTouched()
 void MineUnit::addNumber()
 {
     // 如果原来为UnitType::EMPTY，则更新状态，这样无论如何都为数字
-    this->type == UnitType::NUMBER;
+    this->type = UnitType::NUMBER;
     this->number++;
 }
 

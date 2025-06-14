@@ -57,7 +57,7 @@ signals:
     void stateChanged();
     void flagsChanged(int flags);
 public:
-    GameBoard(int rows, int cols, int mines , QObject *parent = nullptr);
+    GameBoard(int rows , int cols, int mines , QObject *parent = nullptr);
     explicit GameBoard(QObject *parent = nullptr);
     ~GameBoard() override;
 
