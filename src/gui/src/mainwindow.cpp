@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     this->_customDialog = new CustomDialog(this);
-    this->_gameBoard = new GameBoard(this);
+    this->_gameBoard = new MineSweeperTouHou::GameBoard(this);
 
 }
 

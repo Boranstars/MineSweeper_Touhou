@@ -23,7 +23,7 @@ private:
     Ui::MainWindow *ui;
 private:
     CustomDialog *_customDialog;
-    GameBoard *_gameBoard;
+    MineSweeperTouHou::GameBoard *_gameBoard;
 private:
 
 private:
