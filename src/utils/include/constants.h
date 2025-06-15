@@ -70,13 +70,18 @@ namespace MineSweeperTouHou
     {
         struct SceneProperties
         {
-
+            static constexpr int MARGIN = 30;
         };
 
         struct MineUnitProperties
         {
             static constexpr int SIZE = 26;
         };
+    };
+
+    struct GameWindowProperties {
+        static constexpr int MARGIN_X = 10;
+        static constexpr int MARGIN_Y = 70;
     };
 }
 

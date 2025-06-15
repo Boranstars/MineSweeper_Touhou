@@ -7,7 +7,8 @@
 
 #include <QWidget>
 #include <QPainter>
-
+#include "resourceloader.h"
+#include "gameboard.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class SceneWidget; }
 QT_END_NAMESPACE
@@ -19,11 +20,20 @@ public:
     explicit SceneWidget(QWidget *parent = nullptr);
     ~SceneWidget() override;
 
+public:
+
+
 protected:
 void paintEvent(QPaintEvent* event) override;
 
+
+
 private:
     Ui::SceneWidget *ui;
+    MineSweeperTouHou::GameBoard *gameboard = nullptr;
+
+public:
+    void setGameboard(MineSweeperTouHou::GameBoard *gameboard);
 };
 
 

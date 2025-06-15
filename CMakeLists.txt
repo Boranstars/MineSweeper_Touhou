@@ -28,6 +28,8 @@ add_executable(MineSweeper_touhou src/main.cpp
         src/core/src/gameboard.cpp
         src/core/include/gameboard.h
         resources/resources.qrc
+        src/utils/src/ResourceLoader.cpp
+        src/utils/include/ResourceLoader.h
 )
 target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/gui/include)
 target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/core/include)

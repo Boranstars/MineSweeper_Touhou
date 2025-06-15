@@ -1,6 +1,7 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/theme/default/">
         <file>images/covers/uncover.png</file>
+        <file>images/covers/cover.png</file>
         <file>images/numbers/number_2.png</file>
         <file>images/numbers/number_1.png</file>
         <file>images/numbers/number_3.png</file>

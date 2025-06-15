@@ -70,6 +70,11 @@ namespace MineSweeperTouHou {
         void unpause();
         [[nodiscard]] const MineUnit& getUnitAt(int row, int col) const;
 
+        [[nodiscard]] int getRows() const;
+
+        [[nodiscard]] int getCols() const;
+
+        [[nodiscard]] int getRemainFlags() const;
     };
 }
 

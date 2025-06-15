@@ -6,9 +6,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStyle>
+#include <QScreen>
 #include "customdialog.h"
 #include "scenewidget.h"
 #include "gameboard.h"
+#include "constants.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -24,12 +27,15 @@ private:
 private:
     CustomDialog *_customDialog;
     MineSweeperTouHou::GameBoard *_gameBoard;
+    int fitnessW;
+    int fitnessH;
 private:
 
 private:
     void createActions();
 private:
     void setCustomLevel();
+    void resizeWindow();
 private slots:
    void on_restartButton_clicked();
 public:

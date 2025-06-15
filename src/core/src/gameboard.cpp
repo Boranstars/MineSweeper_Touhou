@@ -181,6 +181,8 @@ namespace MineSweeperTouHou {
         firstClick(true)
     {
         qDebug() << "GameBoard with params called";
+        qDebug() << "rows: " << rows;
+        qDebug() << "cols: " << cols;
         timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, [this]()
         {
@@ -225,6 +227,14 @@ namespace MineSweeperTouHou {
                 mineMap[i][j].reset();
             }
         }
+        qDebug() << "GameBoard reseted";
+        qDebug() << "rows: " << rows;
+        qDebug() << "cols: " << cols;
+        qDebug() << "mines: " << mines;
+        qDebug() << "elapsedTime: " << elapsedTime;
+        qDebug() << "firstClick: " << firstClick;
+        qDebug() << "flags: " << flags;
+
     }
 
     void GameBoard::setDifficulty(Difficulty difficulty)
@@ -272,5 +282,17 @@ namespace MineSweeperTouHou {
     const MineUnit& GameBoard::getUnitAt(const int row, const int col) const
     {
         return this->mineMap[row][col];
+    }
+
+    int GameBoard::getRows() const {
+        return rows;
+    }
+
+    int GameBoard::getCols() const {
+        return cols;
+    }
+
+    int GameBoard::getRemainFlags() const {
+        return flags;
     }
 }
