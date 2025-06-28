@@ -41,7 +41,7 @@ namespace MineSweeperTouHou {
         QList<QPoint> minesLocations;
     private:
         void placeMines(int firstRow, int firstCol);
-        void revealMines(int row, int col);
+
         void calculateNumbers();
         /**
          * 递归地揭开周围的方块
@@ -52,8 +52,8 @@ namespace MineSweeperTouHou {
         void revealMinesRecursive(int row, int col);
         void toggleFlags(int row, int col);
         bool isWin() const;
-        signals:
-            void gameWon(int time);
+    signals:
+        void gameWon(int time);
         void gameLost();
         void statusChanged(GameStatus newStatus);
         void stateChanged();
@@ -68,6 +68,7 @@ namespace MineSweeperTouHou {
         void setDifficulty(MineSweeperTouHou::Difficulty difficulty);
         void pause();
         void unpause();
+        void revealMines(int row, int col);
         [[nodiscard]] const MineUnit& getUnitAt(int row, int col) const;
 
         [[nodiscard]] int getRows() const;

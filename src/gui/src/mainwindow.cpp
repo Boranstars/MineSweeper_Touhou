@@ -15,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_gameBoard = new MineSweeperTouHou::GameBoard(this);
     ui->sceneWidget->setGameboard(this->_gameBoard);
 
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::stateChanged, ui->sceneWidget, [=] ()
+    {
+        ui->sceneWidget->update();
+    });
 
 
 }
@@ -22,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow() {
     delete ui;
 }
+
+
 
 void MainWindow::createActions()
 {

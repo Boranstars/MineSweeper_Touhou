@@ -29,29 +29,28 @@ void SceneWidget::paintEvent(QPaintEvent* event)
             int x = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::MineUnitProperties::SIZE * i;
             int y = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::MineUnitProperties::SIZE * j;
 
-
-            // TODO 使用槽函数结合GameBoard的信号来更新UI界面
-            if (unit.getUnitType() == UnitType::EMPTY) {
-                pix = ResourceLoader::getCoverImage();
-                painter.drawPixmap(x, y, pix);
-                continue;
-            }
-
-
             if (unit.isCovered()) {
                 pix = ResourceLoader::getCoverImage();
                 painter.drawPixmap(x, y, pix);
                 continue;
+            } else {
+                // TODO 使用槽函数结合GameBoard的信号来更新UI界面
+                if (unit.getUnitType() == UnitType::EMPTY) {
+                    pix = ResourceLoader::getUncoverImage();
+                    painter.drawPixmap(x, y, pix);
+                    continue;
+                }
+
+
+
+                if (unit.getUnitType() == UnitType::NUMBER) {
+                    pix = ResourceLoader::getNumberImage(unit.getNumber());
+                    // qDebug() << "unit number " << unit.getNumber();
+                } else if (unit.getUnitType() == UnitType::MINE) {
+                    pix = ResourceLoader::getMineImage();
+                }
             }
 
-            painter.drawPixmap(x, y, ResourceLoader::getUncoverImage());
-
-            if (unit.getUnitType() == UnitType::NUMBER) {
-                pix = ResourceLoader::getNumberImage(unit.getNumber());
-                qDebug() << unit.getNumber();
-            } else if (unit.getUnitType() == UnitType::MINE) {
-                pix = ResourceLoader::getMineImage();
-            }
 
             painter.drawPixmap(x, y, pix);
 
@@ -60,6 +59,23 @@ void SceneWidget::paintEvent(QPaintEvent* event)
 
         }
     }
+}
+
+void SceneWidget::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        int row = (event->pos().x() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
+    / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
+
+        int col = (event->pos().y() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
+        / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
+
+        qDebug() << "Clicked at " << row << "," << col;
+
+        this->gameboard->revealMines(row,col);
+    }
+
 }
 
 void SceneWidget::setGameboard(MineSweeperTouHou::GameBoard *gameboard) {

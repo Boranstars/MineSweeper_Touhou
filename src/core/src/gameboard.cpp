@@ -40,6 +40,10 @@ namespace MineSweeperTouHou {
 
     void GameBoard::revealMines(int row, int col)
     {
+        if (row < 0 || row >= rows || col < 0 || col >= cols)
+        {
+            return;
+        }
         if (gameStatus != GameStatus::PLAYING) return;
 
         // 第一次点击的时候才生成雷，避免直接炸了
@@ -54,7 +58,7 @@ namespace MineSweeperTouHou {
         if (mineMap[row][col].isCovered() && !mineMap[row][col].isMarked())
         {
             // 没有揭开并且不是被标记为旗帜的时候，揭开当前的格子
-            mineMap[row][col].setCovered(false);
+            // mineMap[row][col].setCovered(false);
             if (mineMap[row][col].getUnitType() == UnitType::MINE)
             {
                 // 当前设置为触碰到雷
@@ -72,7 +76,7 @@ namespace MineSweeperTouHou {
                 gameStatus = GameStatus::FAILURE;
                 emit gameLost();
             }
-            else if (mineMap[row][col].getUnitType() == UnitType::EMPTY)
+            else if (1 || mineMap[row][col].getUnitType() == UnitType::EMPTY)
             {
                 // 为空的话就递归的揭开周围格子
                 revealMinesRecursive(row, col);
@@ -126,7 +130,8 @@ namespace MineSweeperTouHou {
         }
         // 揭开当前格子
         mineMap[row][col].setCovered(false);
-
+        qDebug() << "Revealing (" << row << "," << col << "): type=" << static_cast<int>(mineMap[row][col].getUnitType())
+         << ", covered=" << mineMap[row][col].isCovered();
         // 递归检查周围八个格子
         if (mineMap[row][col].getUnitType() == UnitType::EMPTY)
         {

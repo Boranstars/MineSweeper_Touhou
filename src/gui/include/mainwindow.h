@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QStyle>
 #include <QScreen>
+#include <QMouseEvent>
 #include "customdialog.h"
 #include "scenewidget.h"
 #include "gameboard.h"
@@ -29,7 +30,8 @@ private:
     MineSweeperTouHou::GameBoard *_gameBoard;
     int fitnessW;
     int fitnessH;
-private:
+
+
 
 private:
     void createActions();

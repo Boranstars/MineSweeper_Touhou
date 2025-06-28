@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QMouseEvent>
 #include "resourceloader.h"
 #include "gameboard.h"
 QT_BEGIN_NAMESPACE
@@ -25,8 +26,7 @@ public:
 
 protected:
 void paintEvent(QPaintEvent* event) override;
-
-
+void mousePressEvent(QMouseEvent* event) override;
 
 private:
     Ui::SceneWidget *ui;
