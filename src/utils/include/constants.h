@@ -70,7 +70,7 @@ namespace MineSweeperTouHou
     {
         struct SceneProperties
         {
-            static constexpr int MARGIN = 30;
+            static constexpr int MARGIN = 0;
         };
 
         struct MineUnitProperties
@@ -81,7 +81,7 @@ namespace MineSweeperTouHou
 
     struct GameWindowProperties {
         static constexpr int MARGIN_X = 10;
-        static constexpr int MARGIN_Y = 70;
+        static constexpr int MARGIN_Y = 99;
     };
 }
 

@@ -26,8 +26,9 @@ void SceneWidget::paintEvent(QPaintEvent* event)
         for (int j = 0; j < gameboard->getCols(); ++j) {
             const MineUnit& unit =gameboard->getUnitAt(i, j);
             QPixmap pix;
-            int x = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::SceneProperties::MARGIN * i;
-            int y = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::SceneProperties::MARGIN * j;
+            int x = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::MineUnitProperties::SIZE * i;
+            int y = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::MineUnitProperties::SIZE * j;
+
 
             // TODO 使用槽函数结合GameBoard的信号来更新UI界面
             if (unit.getUnitType() == UnitType::EMPTY) {

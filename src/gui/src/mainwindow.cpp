@@ -63,7 +63,7 @@ void MainWindow::resizeWindow() {
     fitnessW = MineSweeperTouHou::GameWindowProperties::MARGIN_X * 2 +
         rows * MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
 
-    fitnessH = MineSweeperTouHou::GameWindowProperties::MARGIN_Y * 2+
+    fitnessH = MineSweeperTouHou::GameWindowProperties::MARGIN_X + MineSweeperTouHou::GameWindowProperties::MARGIN_Y +
         cols * MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
         setFixedSize(fitnessW, fitnessH);
         setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(),
@@ -71,6 +71,8 @@ void MainWindow::resizeWindow() {
 
     qDebug() << "fitness w: " << fitnessW;
     qDebug() << "fitness h: " << fitnessH;
+    qDebug() << "rows: " << rows;
+    qDebug() << "cols: " << cols;
 }
 
 
