@@ -11,5 +11,6 @@
         <file>images/numbers/number_6.png</file>
         <file>images/numbers/number_8.png</file>
         <file>images/mines/kiruno.png</file>
+        <file>images/flags/flag.png</file>
     </qresource>
 </RCC>

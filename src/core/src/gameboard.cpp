@@ -97,6 +97,12 @@ namespace MineSweeperTouHou {
 
     }
 
+    void GameBoard::restart()
+    {
+        this->reset(rows,cols,mineInitCount);
+
+    }
+
     void GameBoard::calculateNumbers()
     {
         // 对每个地雷周围的3x3区域执行数字增加，dx ,dy { -1, 0, 1 }
@@ -261,6 +267,7 @@ namespace MineSweeperTouHou {
                 break;
             case Difficulty::CUSTOM:
                 // TODO 结合CustomDialog的信息设置，暂时未实现信息传递
+                this->difficulty = Difficulty::CUSTOM;
                 break;
             default: ;
         }
@@ -291,6 +298,11 @@ namespace MineSweeperTouHou {
 
     int GameBoard::getRows() const {
         return rows;
+    }
+
+    MineSweeperTouHou::Difficulty GameBoard::getCurrentDifficulty() const
+    {
+        return difficulty;
     }
 
     int GameBoard::getCols() const {

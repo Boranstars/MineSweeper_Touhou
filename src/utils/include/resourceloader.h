@@ -22,6 +22,7 @@ namespace MineSweeperTouHou {
         static QPixmap getUncoverImage();
         static QPixmap getMineImage();
         static QPixmap getNumberImage(int number);
+        static QPixmap getFlagImage();
         static const QVector<QPixmap> &getNumberImages();
     private:
         static QPixmap loadPixmap(const QString& path);

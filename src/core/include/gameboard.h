@@ -50,7 +50,7 @@ namespace MineSweeperTouHou {
          *
          */
         void revealMinesRecursive(int row, int col);
-        void toggleFlags(int row, int col);
+
         bool isWin() const;
     signals:
         void gameWon(int time);
@@ -69,9 +69,12 @@ namespace MineSweeperTouHou {
         void pause();
         void unpause();
         void revealMines(int row, int col);
+        void toggleFlags(int row, int col);
+        void restart();
         [[nodiscard]] const MineUnit& getUnitAt(int row, int col) const;
 
         [[nodiscard]] int getRows() const;
+        [[nodiscard]] Difficulty getCurrentDifficulty() const;
 
         [[nodiscard]] int getCols() const;
 

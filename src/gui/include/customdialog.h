@@ -6,7 +6,7 @@
 #define CUSTOMDIALOG_H
 
 #include <QDialog>
-
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class CustomDialog; }
@@ -18,9 +18,16 @@ Q_OBJECT
 public:
     explicit CustomDialog(QWidget *parent = nullptr);
     ~CustomDialog() override;
-
+    int getCustomRows() const;
+    int getCustomCols() const;
+    int getCustomMines() const;
+private slots:
+    void on_doneButton_clicked();
 private:
     Ui::CustomDialog *ui;
+    int customRows;
+    int customCols;
+    int customMines;
 };
 
 

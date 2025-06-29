@@ -26,6 +26,10 @@ namespace MineSweeperTouHou {
         return loadPixmap(QString(":/theme/%1/images/mines/kiruno.png").arg(currentTheme));
     }
 
+    QPixmap ResourceLoader::getFlagImage()
+    {
+        return loadPixmap(QString(":/theme/%1/images/flags/flag.png").arg(currentTheme));
+    }
     QPixmap ResourceLoader::getNumberImage(int number) {
         static QVector<QPixmap> numbers = loadNumberImages();
         if (number >= 1 && number <= 8) {
@@ -35,6 +39,8 @@ namespace MineSweeperTouHou {
             return {};
         }
     }
+
+
 
     const QVector<QPixmap> & ResourceLoader::getNumberImages() {
         static QVector<QPixmap> numbers = loadNumberImages();

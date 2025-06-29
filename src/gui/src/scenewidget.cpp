@@ -30,7 +30,13 @@ void SceneWidget::paintEvent(QPaintEvent* event)
             int y = GameObjectProperties::SceneProperties::MARGIN + GameObjectProperties::MineUnitProperties::SIZE * j;
 
             if (unit.isCovered()) {
-                pix = ResourceLoader::getCoverImage();
+                if (unit.isMarked())
+                {
+                    pix = ResourceLoader::getFlagImage();
+                } else {
+                    pix = ResourceLoader::getCoverImage();
+                }
+
                 painter.drawPixmap(x, y, pix);
                 continue;
             } else {
@@ -63,17 +69,25 @@ void SceneWidget::paintEvent(QPaintEvent* event)
 
 void SceneWidget::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        int row = (event->pos().x() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
+    int row = (event->pos().x() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
     / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
 
-        int col = (event->pos().y() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
-        / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
+    int col = (event->pos().y() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
+    / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
 
-        qDebug() << "Clicked at " << row << "," << col;
+    if (event->button() == Qt::LeftButton)
+    {
+
+
+        qDebug() << "Left Clicked at " << row << "," << col;
 
         this->gameboard->revealMines(row,col);
+    }
+
+    if (event->button() == Qt::RightButton)
+    {
+        qDebug() << "Right Clicked at " << row << "," << col;
+        this->gameboard->toggleFlags(row,col);
     }
 
 }

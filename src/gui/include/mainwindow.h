@@ -10,6 +10,7 @@
 #include <QScreen>
 #include <QMouseEvent>
 #include "customdialog.h"
+#include "windialog.h"
 #include "scenewidget.h"
 #include "gameboard.h"
 #include "constants.h"
@@ -28,6 +29,7 @@ private:
 private:
     CustomDialog *_customDialog;
     MineSweeperTouHou::GameBoard *_gameBoard;
+
     int fitnessW;
     int fitnessH;
 
@@ -35,11 +37,17 @@ private:
 
 private:
     void createActions();
+    void createConnections();
 private:
     void setCustomLevel();
     void resizeWindow();
 private slots:
-   void on_restartButton_clicked();
+    void on_restartButton_clicked();
+    void on_GameWon(int elapsedTime);
+    void on_GameLost();
+    void on_FlagsChanged(int flags);
+    void on_StatusChanged(MineSweeperTouHou::GameStatus newStatus);
+
 public:
     void init();
 };

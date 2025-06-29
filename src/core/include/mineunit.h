@@ -18,7 +18,7 @@ namespace MineSweeperTouHou {
         UnitType type;
         int number;
         bool covered;
-        bool marked;
+        bool marked = false;
         bool mistaken;
         bool touched;
 
@@ -35,6 +35,7 @@ namespace MineSweeperTouHou {
         void setMistaken(bool mistaken);
         [[nodiscard]] bool isTouched() const;
         void setTouched();
+
 
         void addNumber();
         void setAsMineUnit();

@@ -15,16 +15,15 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_gameBoard = new MineSweeperTouHou::GameBoard(this);
     ui->sceneWidget->setGameboard(this->_gameBoard);
 
-    connect(_gameBoard, &MineSweeperTouHou::GameBoard::stateChanged, ui->sceneWidget, [=] ()
-    {
-        ui->sceneWidget->update();
-    });
+
 
 
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete _customDialog;
+    delete _gameBoard;
 }
 
 
@@ -52,11 +51,35 @@ void MainWindow::createActions()
     });
 }
 
+void MainWindow::createConnections()
+{
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::stateChanged, ui->sceneWidget, [=] ()
+    {
+        ui->sceneWidget->update();
+    });
+
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::gameWon, this, &MainWindow::on_GameWon);
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::gameLost, this, &MainWindow::on_GameLost);
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::flagsChanged, this, &MainWindow::on_FlagsChanged);
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::statusChanged, this, &MainWindow::on_StatusChanged);
+
+
+}
+
 void MainWindow::setCustomLevel()
 {
     if (_customDialog->exec() == QDialog::Accepted)
     {
+        _gameBoard->setDifficulty(MineSweeperTouHou::Difficulty::CUSTOM);
+        int customRows = _customDialog->getCustomRows();
+        int customCols = _customDialog->getCustomCols();
+        int customMines = _customDialog->getCustomMines();
+       _gameBoard->reset(customRows,customCols,customMines);
+        resizeWindow();
+        ui->sceneWidget->update();
+
         qDebug() << "set custom level";
+        qDebug() << customRows << " " << customCols << " " << customMines;
 
 
     }
@@ -84,10 +107,37 @@ void MainWindow::resizeWindow() {
 
 void MainWindow::on_restartButton_clicked()
 {
+    _gameBoard->restart();
+    ui->sceneWidget->update();
     qDebug() << "Restart";
 }
+
+void MainWindow::on_GameWon(int elapsedTime)
+{
+    WinDialog *winDialog = new WinDialog(elapsedTime, this);
+    connect(winDialog, &WinDialog::restartRequested, this, &MainWindow::on_restartButton_clicked);
+    winDialog->exec(); // 使用 exec() 运行模态对话框
+    winDialog->deleteLater(); // 确保堆上对象销毁
+}
+
+void MainWindow::on_GameLost()
+{
+
+}
+
+void MainWindow::on_FlagsChanged(int flags)
+{
+
+}
+
+void MainWindow::on_StatusChanged(MineSweeperTouHou::GameStatus newStatus)
+{
+
+}
+
 
 void MainWindow::init()
 {
     this->createActions();
+    this->createConnections();
 }

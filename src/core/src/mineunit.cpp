@@ -38,6 +38,7 @@ namespace MineSweeperTouHou {
 
     bool MineUnit::isMarked() const
     {
+
         return marked;
     }
 
@@ -45,6 +46,8 @@ namespace MineSweeperTouHou {
     {
         this->marked = marked;
     }
+
+
 
     bool MineUnit::isMistaken() const
     {
@@ -65,6 +68,8 @@ namespace MineSweeperTouHou {
     {
         this->touched = true;
     }
+
+
 
     void MineUnit::addNumber()
     {
