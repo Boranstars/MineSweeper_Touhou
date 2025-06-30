@@ -79,6 +79,7 @@ namespace MineSweeperTouHou {
         [[nodiscard]] int getCols() const;
 
         [[nodiscard]] int getRemainFlags() const;
+        [[nodiscard]] GameStatus getGameStatus() const;
     };
 }
 

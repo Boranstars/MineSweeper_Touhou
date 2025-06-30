@@ -15,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_gameBoard = new MineSweeperTouHou::GameBoard(this);
     ui->sceneWidget->setGameboard(this->_gameBoard);
 
-
+    _gameBoard->setDifficulty(MineSweeperTouHou::Difficulty::EASY);
+    resizeWindow();
+    ui->sceneWidget->update();
 
 
 }
@@ -49,6 +51,8 @@ void MainWindow::createActions()
         resizeWindow();
         ui->sceneWidget->update();
     });
+
+    connect(ui->actionRestart, &QAction::triggered,this, &MainWindow::on_restartButton_clicked);
 }
 
 void MainWindow::createConnections()
@@ -122,12 +126,17 @@ void MainWindow::on_GameWon(int elapsedTime)
 
 void MainWindow::on_GameLost()
 {
-
+    LostDialog *lostDialog = new LostDialog(this);
+    connect(lostDialog, &LostDialog::restartRequested, this, &MainWindow::on_restartButton_clicked);
+    connect(lostDialog, &LostDialog::exitGameRequested, this, &MainWindow::close);
+    lostDialog->exec();
+    lostDialog->deleteLater();
 }
 
 void MainWindow::on_FlagsChanged(int flags)
 {
-
+    qDebug() << "Remainflags: " << flags;
+    ui->MineRemainLabel->setText(QString::number(flags));
 }
 
 void MainWindow::on_StatusChanged(MineSweeperTouHou::GameStatus newStatus)

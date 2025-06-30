@@ -33,6 +33,9 @@ add_executable(MineSweeper_touhou src/main.cpp
         src/gui/src/windialog.cpp
         src/gui/include/windialog.h
         src/gui/view/WinDialog.ui
+        src/gui/src/lostdialog.cpp
+        src/gui/include/lostdialog.h
+        src/gui/view/LostDialog.ui
 )
 target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/gui/include)
 target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/core/include)

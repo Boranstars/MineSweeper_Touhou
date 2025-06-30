@@ -73,8 +73,12 @@ namespace MineSweeperTouHou {
                         }
                     }
                 }
+
                 gameStatus = GameStatus::FAILURE;
+                qDebug() << "Emitting gameLost";
                 emit gameLost();
+
+
             }
             else if (1 || mineMap[row][col].getUnitType() == UnitType::EMPTY)
             {
@@ -311,5 +315,9 @@ namespace MineSweeperTouHou {
 
     int GameBoard::getRemainFlags() const {
         return flags;
+    }
+
+    GameStatus GameBoard::getGameStatus() const {
+        return gameStatus;
     }
 }

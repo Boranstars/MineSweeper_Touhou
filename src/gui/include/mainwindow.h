@@ -11,6 +11,7 @@
 #include <QMouseEvent>
 #include "customdialog.h"
 #include "windialog.h"
+#include "lostdialog.h"
 #include "scenewidget.h"
 #include "gameboard.h"
 #include "constants.h"

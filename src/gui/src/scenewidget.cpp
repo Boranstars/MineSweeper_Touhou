@@ -69,6 +69,10 @@ void SceneWidget::paintEvent(QPaintEvent* event)
 
 void SceneWidget::mousePressEvent(QMouseEvent* event)
 {
+    if (gameboard->getGameStatus() != GameStatus::PLAYING) {
+        qDebug() << "Game is not playing, ignore mousePressEvent";
+        return;
+    }
     int row = (event->pos().x() - MineSweeperTouHou::GameObjectProperties::SceneProperties::MARGIN )
     / MineSweeperTouHou::GameObjectProperties::MineUnitProperties::SIZE;
 
