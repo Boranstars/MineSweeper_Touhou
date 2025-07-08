@@ -9,6 +9,7 @@
 #include <QStyle>
 #include <QScreen>
 #include <QMouseEvent>
+#include <QTimer>
 #include "customdialog.h"
 #include "windialog.h"
 #include "lostdialog.h"
@@ -26,8 +27,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 private:
+
     Ui::MainWindow *ui;
-private:
+    QTimer *_timer;
+    int elapsedTime = 0;
     CustomDialog *_customDialog;
     MineSweeperTouHou::GameBoard *_gameBoard;
 
@@ -44,11 +47,12 @@ private:
     void resizeWindow();
 private slots:
     void on_restartButton_clicked();
-    void on_GameWon(int elapsedTime);
+    void on_GameWon();
     void on_GameLost();
     void on_FlagsChanged(int flags);
     void on_StatusChanged(MineSweeperTouHou::GameStatus newStatus);
-
+    void on_FirstClicked();
+    void on_GamePaused();
 public:
     void init();
 };
