@@ -118,16 +118,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         windeployqt ${{ steps.strings.outputs.build-output-dir }}/Release/MineSweeper_touhou.exe
-    - name: Deploy Qt dependencies (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        cd ${{ steps.strings.outputs.build-output-dir }}
-        linuxdeployqt MineSweeper_touhou -appimage
-      # 调试步骤：完整列出 build 目录结构
-    - name: List all build files
-      run: |
-        echo "Full build directory structure:"
-        find ${{ steps.strings.outputs.build-output-dir }} -type f -print
+
       # 上传所有构建产物（包括可执行文件和 Qt 依赖）
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
