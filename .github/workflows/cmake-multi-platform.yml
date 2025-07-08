@@ -79,6 +79,7 @@ jobs:
       run: |
         echo "$QT_PATH/bin" >> $GITHUB_PATH
         echo "QT_DIR=$QT_PATH" >> $GITHUB_ENV
+        
        
           
     - name: Configure CMake
@@ -89,6 +90,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DCMAKE_PREFIX_PATH="${{ env.QT_DIR }}" 
         -S ${{ github.workspace }}
 
     - name: Build
