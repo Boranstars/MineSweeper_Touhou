@@ -60,13 +60,15 @@ jobs:
       with:
        
         # Version of Qt to install
-        version: 6.8.3# optional, default is 6.8.3
+        version: 6.8.3
+        # optional, default is 6.8.3
         # Host platform
         # host: # optional
         # Target platform for build
         # target: # optional, default is desktop
         # Architecture for Windows/Android
-        arch: ${{ matrix.qt_arch }}# optional
+        arch: ${{ matrix.qt_arch }}
+        # optional
        
         # Whether or not to cache Qt automatically
         cache: true# optional
