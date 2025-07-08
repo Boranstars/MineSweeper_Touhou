@@ -71,9 +71,14 @@ jobs:
         # optional
        
         # Whether or not to cache Qt automatically
-        cache: true# optional
-     
-    
+        cache: true
+        # optional
+    - name: Add Qt to PATH (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        echo "$QT_PATH/bin" >> $GITHUB_PATH
+        echo "QT_DIR=$QT_PATH" >> $GITHUB_ENV
        
           
     - name: Configure CMake
