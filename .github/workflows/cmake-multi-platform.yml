@@ -73,6 +73,16 @@ jobs:
         # Whether or not to cache Qt automatically
         cache: true
         # optional
+
+    - name: Install linuxdeployqt (Linux only)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y patchelf desktop-file-utils
+        wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        chmod +x linuxdeployqt-continuous-x86_64.AppImage
+        sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+
     - name: Add Qt to PATH (Windows)
       if: matrix.os == 'windows-latest'
       shell: bash
@@ -102,3 +112,26 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
+
+      # 部署 Qt 依赖
+    - name: Deploy Qt dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        windeployqt ${{ steps.strings.outputs.build-output-dir }}/Release/MineSweeper_touhou.exe
+    - name: Deploy Qt dependencies (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd ${{ steps.strings.outputs.build-output-dir }}
+        linuxdeployqt MineSweeper_touhou -appimage
+      # 调试步骤：完整列出 build 目录结构
+    - name: List all build files
+      run: |
+        echo "Full build directory structure:"
+        find ${{ steps.strings.outputs.build-output-dir }} -type f -print
+      # 上传所有构建产物（包括可执行文件和 Qt 依赖）
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.strings.outputs.artifact-name }}
+        path: |
+          ${{ steps.strings.outputs.build-output-dir }}
