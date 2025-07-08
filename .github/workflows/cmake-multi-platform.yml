@@ -53,6 +53,7 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "artifact-name=MineSweeper-${{ matrix.os }}-${{ matrix.build_type }}" >> "$GITHUB_OUTPUT"
     - name: Install Qt
       # You may pin to the exact commit or the version.
       # uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
@@ -118,7 +119,17 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         windeployqt ${{ steps.strings.outputs.build-output-dir }}/Release/MineSweeper_touhou.exe
-
+    - name: List Windows files
+      if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+        echo "Windows build files:"
+        dir /s /b "${{ steps.strings.outputs.build-output-dir }}\Release"
+    - name: List Linux files
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "Linux build files:"
+        find ${{ steps.strings.outputs.build-output-dir }} -type f -print
       # 上传所有构建产物（包括可执行文件和 Qt 依赖）
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
