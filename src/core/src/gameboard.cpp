@@ -296,7 +296,7 @@ namespace MineSweeperTouHou {
         emit statusChanged(this->gameStatus);
     }
 
-    __unused void GameBoard::unpause()
+    void GameBoard::unpause()
     {
 
         if (gameStatus == GameStatus::PAUSED) {
