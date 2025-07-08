@@ -27,6 +27,7 @@ namespace MineSweeperTouHou {
     };
 
 
+
     class GameBoard : public QObject{
         Q_OBJECT
     private:
@@ -53,11 +54,12 @@ namespace MineSweeperTouHou {
 
         bool isWin() const;
     signals:
-        void gameWon(int time);
+        void gameWon();
         void gameLost();
         void statusChanged(GameStatus newStatus);
         void stateChanged();
         void flagsChanged(int flags);
+        void firstClicked();
     public:
         GameBoard(int rows , int cols, int mines , QObject *parent = nullptr);
         explicit GameBoard(QObject *parent = nullptr);

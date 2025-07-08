@@ -52,6 +52,7 @@ namespace MineSweeperTouHou {
             placeMines(row, col);
             calculateNumbers();
             firstClick = false;
+            emit firstClicked();
             this->timer->start(TIME_INTERVAL); // 1秒更新一次
         }
 
@@ -76,6 +77,7 @@ namespace MineSweeperTouHou {
 
                 gameStatus = GameStatus::FAILURE;
                 qDebug() << "Emitting gameLost";
+                emit statusChanged(this->gameStatus);
                 emit gameLost();
 
 
@@ -92,7 +94,8 @@ namespace MineSweeperTouHou {
             {
                 gameStatus = GameStatus::SUCCESS;
                 this->timer->stop();
-                emit gameWon(this->elapsedTime);
+                emit statusChanged(this->gameStatus);
+                emit gameWon();
 
             }
         }
@@ -284,11 +287,18 @@ namespace MineSweeperTouHou {
         if (gameStatus == GameStatus::PLAYING) {
             gameStatus = GameStatus::PAUSED;
             timer->stop();
+            qDebug() << "Paused";
+        } else if (gameStatus == GameStatus::PAUSED) {
+            gameStatus = GameStatus::PLAYING;
+            timer->start(TIME_INTERVAL);
+            qDebug() << "Unpaused";
         }
+        emit statusChanged(this->gameStatus);
     }
 
-    void GameBoard::unpause()
+    __unused void GameBoard::unpause()
     {
+
         if (gameStatus == GameStatus::PAUSED) {
             gameStatus = GameStatus::PLAYING;
             timer->start(TIME_INTERVAL);

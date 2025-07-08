@@ -70,7 +70,12 @@ namespace MineSweeperTouHou
     {
         struct SceneProperties
         {
-            static constexpr int MARGIN = 0;
+#if defined(__APPLE__) && defined(__MACH__)
+            static constexpr int MARGIN = -1;
+#else
+            static constexpr int MARGIN = 5;
+#endif
+
         };
 
         struct MineUnitProperties

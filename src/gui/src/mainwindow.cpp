@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->_customDialog = new CustomDialog(this);
     this->_gameBoard = new MineSweeperTouHou::GameBoard(this);
+    this->_timer = new QTimer(this);
     ui->sceneWidget->setGameboard(this->_gameBoard);
 
     _gameBoard->setDifficulty(MineSweeperTouHou::Difficulty::EASY);
@@ -53,6 +54,7 @@ void MainWindow::createActions()
     });
 
     connect(ui->actionRestart, &QAction::triggered,this, &MainWindow::on_restartButton_clicked);
+    connect(ui->actionPause, &QAction::triggered,this, &MainWindow::on_GamePaused);
 }
 
 void MainWindow::createConnections()
@@ -66,6 +68,13 @@ void MainWindow::createConnections()
     connect(_gameBoard, &MineSweeperTouHou::GameBoard::gameLost, this, &MainWindow::on_GameLost);
     connect(_gameBoard, &MineSweeperTouHou::GameBoard::flagsChanged, this, &MainWindow::on_FlagsChanged);
     connect(_gameBoard, &MineSweeperTouHou::GameBoard::statusChanged, this, &MainWindow::on_StatusChanged);
+    connect(_gameBoard, &MineSweeperTouHou::GameBoard::firstClicked, this, &MainWindow::on_FirstClicked);
+    connect(_timer, &QTimer::timeout, this, [this]() {
+        this->elapsedTime++;
+        // this->elapsedTime += this->_timer->interval();
+        ui->timeValueLabel->setText(QString::number(this->elapsedTime));
+
+    });
 
 
 }
@@ -102,6 +111,13 @@ void MainWindow::resizeWindow() {
         setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(),
                                     QGuiApplication::primaryScreen()->geometry()));
 
+    // 开始的时候剩余旗帜数量等于雷数量
+    ui->MineRemainLabel->setText(QString::number(_gameBoard->getRemainFlags()));
+    ui->timeValueLabel->setText(QString::number(0));
+    if (this->_timer->isActive()) {
+        this->_timer->stop();
+    }
+    this->elapsedTime = 0;
     qDebug() << "fitness w: " << fitnessW;
     qDebug() << "fitness h: " << fitnessH;
     qDebug() << "rows: " << rows;
@@ -113,12 +129,19 @@ void MainWindow::on_restartButton_clicked()
 {
     _gameBoard->restart();
     ui->sceneWidget->update();
+    ui->MineRemainLabel->setText(QString::number(_gameBoard->getRemainFlags()));
+    ui->timeValueLabel->setText(QString::number(0));
+    if (this->_timer->isActive()) {
+        this->_timer->stop();
+    }
+    this->elapsedTime = 0;
     qDebug() << "Restart";
 }
 
-void MainWindow::on_GameWon(int elapsedTime)
+void MainWindow::on_GameWon()
 {
-    WinDialog *winDialog = new WinDialog(elapsedTime, this);
+
+    WinDialog *winDialog = new WinDialog(this->elapsedTime, this);
     connect(winDialog, &WinDialog::restartRequested, this, &MainWindow::on_restartButton_clicked);
     winDialog->exec(); // 使用 exec() 运行模态对话框
     winDialog->deleteLater(); // 确保堆上对象销毁
@@ -141,6 +164,43 @@ void MainWindow::on_FlagsChanged(int flags)
 
 void MainWindow::on_StatusChanged(MineSweeperTouHou::GameStatus newStatus)
 {
+    // TODO 将游戏胜利\失败\暂停\放入此处处理
+    qDebug() << "GameStatus changed: " ;
+    switch (newStatus) {
+        case MineSweeperTouHou::GameStatus::FAILURE:
+            qDebug() << "FAILURE";
+            // TODO
+            this->_timer->stop();
+            break;
+        case MineSweeperTouHou::GameStatus::SUCCESS:
+            qDebug() << "SUCCESS";
+            // TODO
+            this->_timer->stop();
+            break;
+        case MineSweeperTouHou::GameStatus::PAUSED:
+            qDebug() << "PAUSED";
+
+            this->_timer->stop();
+            break;
+        case MineSweeperTouHou::GameStatus::PLAYING:
+            qDebug() << "PLAYING";
+            if (!this->_timer->isActive()) {
+
+                this->_timer->start(MineSweeperTouHou::TIME_INTERVAL);
+            }
+            break;
+
+    }
+}
+
+void MainWindow::on_FirstClicked() {
+    this->_timer->start(MineSweeperTouHou::TIME_INTERVAL);
+}
+
+void MainWindow::on_GamePaused() {
+    _gameBoard->pause();
+
+
 
 }
 
@@ -149,4 +209,6 @@ void MainWindow::init()
 {
     this->createActions();
     this->createConnections();
+    this->setWindowTitle(tr("MineSweeperTouhou"));
+
 }
