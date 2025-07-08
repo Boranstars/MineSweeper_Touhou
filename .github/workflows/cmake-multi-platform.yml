@@ -53,7 +53,7 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-        echo "artifact-name=MineSweeper-${{ matrix.os }}-${{ matrix.build_type }}" >> "$GITHUB_OUTPUT"
+        echo "artifact-name=MineSweeper-${{ matrix.os }}-${{ matrix.c_compiler }}-${{ matrix.build_type }}" >> "$GITHUB_OUTPUT"
     - name: Install Qt
       # You may pin to the exact commit or the version.
       # uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
