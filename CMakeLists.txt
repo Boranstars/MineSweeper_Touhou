@@ -11,7 +11,17 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+
         REQUIRED)
+set(CORE_DIR ${CMAKE_SOURCE_DIR}/src/core)
+set(CORE_INCLUDE_DIR ${CORE_DIR}/include)
+set(CORE_SOURCES_DIR ${CORE_DIR}/src)
+
+set(UTILS_DIR ${CMAKE_SOURCE_DIR}/src/utils)
+set(UTILS_INCLUDE_DIR ${UTILS_DIR}/include)
+set(UTILS_SOURCES_DIR ${UTILS_DIR}/src)
+
+
 
 add_executable(MineSweeper_touhou
         src/main.cpp
@@ -39,12 +49,14 @@ add_executable(MineSweeper_touhou
         src/gui/view/LostDialog.ui
 )
 target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/gui/include)
-target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/core/include)
-target_include_directories(MineSweeper_touhou PRIVATE ${CMAKE_SOURCE_DIR}/src/utils/include)
+target_include_directories(MineSweeper_touhou PRIVATE ${CORE_INCLUDE_DIR})
+target_include_directories(MineSweeper_touhou PRIVATE ${UTILS_INCLUDE_DIR})
 target_link_libraries(MineSweeper_touhou
         Qt::Core
         Qt::Gui
         Qt::Widgets
+
+
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -76,5 +88,16 @@ if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     endforeach (QT_LIB)
 endif ()
 
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG v1.17.0
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
+FetchContent_MakeAvailable(googletest)
+
+add_subdirectory(tests)
 

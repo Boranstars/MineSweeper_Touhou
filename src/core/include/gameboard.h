@@ -65,6 +65,7 @@ namespace MineSweeperTouHou {
         explicit GameBoard(QObject *parent = nullptr);
         ~GameBoard() override;
 
+
     public:
         void reset(int rows, int cols, int mines);
         void setDifficulty(MineSweeperTouHou::Difficulty difficulty);

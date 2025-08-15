@@ -90,6 +90,7 @@ namespace MineSweeperTouHou {
         this->covered = true;
         this->marked = false;
         this->mistaken = false;
+        this->touched = false;
 
     }
 }
