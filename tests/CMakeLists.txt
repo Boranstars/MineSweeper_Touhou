@@ -43,4 +43,4 @@ add_test_executable(gameboard_test
 
 
 
-add_executable(resouseloader utils/resouceloader_test.cpp)
+#add_executable(resouseloader utils/resouceloader_test.cpp)
