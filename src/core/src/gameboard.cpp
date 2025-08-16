@@ -79,6 +79,8 @@ namespace MineSweeperTouHou {
                 qDebug() << "Emitting gameLost";
                 emit statusChanged(this->gameStatus);
                 emit gameLost();
+                return;
+
 
 
             }
@@ -90,7 +92,7 @@ namespace MineSweeperTouHou {
             // 发送信号让sceneWidget重绘
             emit stateChanged();
 
-            if (isWin())
+            if (gameStatus == GameStatus::PLAYING && isWin())
             {
                 gameStatus = GameStatus::SUCCESS;
                 this->timer->stop();
@@ -180,11 +182,13 @@ namespace MineSweeperTouHou {
         {
             for (int col = 0; col < cols; ++col)
             {
+                // 非雷方块仍然被覆盖 → 尚未获胜
                 if (mineMap[row][col].getUnitType() != UnitType::MINE && mineMap[row][col].isCovered())
                 {
                     // 还有雷没有揭开
                     return false;
                 }
+
             }
         }
         return true;

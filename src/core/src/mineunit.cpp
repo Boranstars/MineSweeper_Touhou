@@ -4,6 +4,9 @@
 
 #include "mineunit.h"
 
+#include <stdexcept>
+
+
 namespace MineSweeperTouHou {
     UnitType MineUnit::getUnitType() const
     {
@@ -74,7 +77,20 @@ namespace MineSweeperTouHou {
     void MineUnit::addNumber()
     {
         // 如果原来为UnitType::EMPTY，则更新状态，这样无论如何都为数字
-        this->type = UnitType::NUMBER;
+        if (this->type == UnitType::EMPTY) {
+            this->type = UnitType::NUMBER;
+            this->number = 0;
+        }
+        if (this->type == UnitType::MINE) {
+            // 不应该出现这种情况
+            throw std::runtime_error("MineUnit::addNumber() called on an mine type unit");
+            return;
+        }
+        if (this->number == 8) {
+            // 数字不能大于9
+            return;
+        }
+        // this->type = UnitType::NUMBER;
         this->number++;
     }
 

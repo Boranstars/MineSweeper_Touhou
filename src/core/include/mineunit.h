@@ -15,12 +15,12 @@ namespace MineSweeperTouHou {
 
     class MineUnit {
     private:
-        UnitType type;
-        int number;
-        bool covered;
+        UnitType type = UnitType::EMPTY;
+        int number = 0;
+        bool covered = true;
         bool marked = false;
-        bool mistaken;
-        bool touched;
+        bool mistaken = false;
+        bool touched = false;
 
     public:
         [[nodiscard]] UnitType getUnitType() const;

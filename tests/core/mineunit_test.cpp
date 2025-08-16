@@ -15,7 +15,7 @@ protected:
 TEST_F(MineUnitTest, DefaultConstruction_InitialStateCorrect) {
     EXPECT_EQ(unit.getUnitType(), UnitType::EMPTY);
     EXPECT_EQ(unit.getNumber(), 0);
-    EXPECT_FALSE(unit.isCovered());       // 默认不是被覆盖的？
+    EXPECT_TRUE(unit.isCovered());       // 默认是被覆盖的
     EXPECT_FALSE(unit.isMarked());
     EXPECT_FALSE(unit.isMistaken());
     EXPECT_FALSE(unit.isTouched());
@@ -51,12 +51,25 @@ TEST_F(MineUnitTest, SetNumberChangesTypeToNumber) {
 // - 更改类型为 NUMBER
 // - 数值正确递增
 TEST_F(MineUnitTest, AddNumberIncrementsAndSetsToNumber) {
+    // 初始状态验证
+    EXPECT_EQ(unit.getUnitType(), UnitType::EMPTY);
+    EXPECT_EQ(unit.getNumber(), 0);
+
+    // 第一次调用
     unit.addNumber();
     EXPECT_EQ(unit.getUnitType(), UnitType::NUMBER);
     EXPECT_EQ(unit.getNumber(), 1);
 
+    // 第二次调用
     unit.addNumber();
+    EXPECT_EQ(unit.getUnitType(), UnitType::NUMBER);
     EXPECT_EQ(unit.getNumber(), 2);
+
+    // 边界测试：多次调用
+    for (int i = 0; i < 10; i++) {
+        unit.addNumber();
+    }
+    EXPECT_EQ(unit.getNumber(), 8);
 }
 
 // 测试覆盖状态是否正确设置
@@ -109,4 +122,13 @@ TEST_F(MineUnitTest, ResetToDefaultState) {
     EXPECT_FALSE(unit.isMarked());
     EXPECT_FALSE(unit.isMistaken());
     EXPECT_FALSE(unit.isTouched());
+}
+
+
+TEST_F(MineUnitTest, AddNumberOnMineUnit) {
+    // 设置单元为地雷
+    unit.setUnitType(UnitType::MINE);
+
+
+    EXPECT_THROW(unit.addNumber(), std::runtime_error);
 }
