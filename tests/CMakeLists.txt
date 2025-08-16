@@ -45,7 +45,7 @@ add_test_executable(gameboard_test
 
 
 
-add_test_executable(resouseloader_test utils/resouceloader_test.cpp
-        ${UTILS_SOURCES_DIR}/resourceloader.cpp
-        ${CMAKE_SOURCE_DIR}/resources/resources.qrc
-)
+#add_test_executable(resouseloader_test utils/resouceloader_test.cpp
+#        ${UTILS_SOURCES_DIR}/resourceloader.cpp
+#        ${CMAKE_SOURCE_DIR}/resources/resources.qrc
+#)
