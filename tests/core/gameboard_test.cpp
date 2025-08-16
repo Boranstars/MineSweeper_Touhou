@@ -43,6 +43,58 @@ protected:
         }
         return count;
     }
+
+    void printBoardState() {
+        std::cout << "\nCurrent Board State:\n";
+        for (int r = 0; r < board->getRows(); ++r) {
+            for (int c = 0; c < board->getCols(); ++c) {
+                const MineUnit& unit = getUnit(r, c);
+                char display = '.';
+
+                if (!unit.isCovered()) {
+                    if (unit.getUnitType() == UnitType::MINE) {
+                        display = unit.isTouched() ? 'X' : '*';
+                    } else {
+                        display = '0' + unit.getNumber();
+                    }
+                } else if (unit.isMarked()) {
+                    display = 'F';
+                }
+                std::cout << display << ' ';
+            }
+            std::cout << '\n';
+        }
+        std::cout << "Status: "
+                  << static_cast<int>(board->getGameStatus())
+                  << " | Flags left: " << board->getRemainFlags()
+                  << "\n\n";
+    }
+    // 新增：获取雷位置列表
+    QList<QPoint> getMinePositions() {
+        QList<QPoint> mines;
+        for (int r = 0; r < board->getRows(); ++r) {
+            for (int c = 0; c < board->getCols(); ++c) {
+                if (getUnit(r, c).getUnitType() == UnitType::MINE) {
+                    mines.append(QPoint(r, c));
+                }
+            }
+        }
+        return mines;
+    }
+    // 新增：安全首次点击（确保不踩雷）
+    void safeFirstClick() {
+        // 找到第一个非雷位置点击
+        for (int r = 0; r < board->getRows(); ++r) {
+            for (int c = 0; c < board->getCols(); ++c) {
+                if (getUnit(r, c).getUnitType() != UnitType::MINE) {
+                    reveal(r, c);
+                    return;
+                }
+            }
+        }
+        FAIL() << "No safe tile found for first click!";
+    }
+
 };
 
 // 验证构造是否正确
@@ -67,37 +119,52 @@ TEST_F(GameBoardTest, Reset_SetsAllUnitsToDefault) {
     }
 }
 
-// 首次点击后生成 3x3 安全区
-TEST_F(GameBoardTest, FirstClick_CreatesSafe3x3Area) {
-    int testRow = 2;
-    int testCol = 2;
+// 第一次点击不应该触发雷
+TEST_F(GameBoardTest, FirstClickNeverTriggersMine) {
+    const int testRuns = 10;
+    for (int i = 0; i < testRuns; ++i) {
+        board->reset(3, 3, 1);
+        reveal(1, 1); // 中心点击
+        // 验证点击位置不是雷
+        ASSERT_NE(getUnit(1, 1).getUnitType(), UnitType::MINE)
+            << "First click triggered mine at attempt " << i;
 
-    board->reset(5, 5, 5); // 重置保证雷数一致
-    board->revealMines(testRow, testCol); // 第一次点击，触发生成雷区
-
-    const MineUnit& clicked = getUnit(testRow, testCol);
-    EXPECT_FALSE(clicked.isTouched()); // 未踩雷
-
-    // // 检查 3x3 区域是否无雷
-    // for (int dr = -1; dr <= 1; dr++) {
-    //     for (int dc = -1; dc <= 1; dc++) {
-    //         int r = testRow + dr;
-    //         int c = testCol + dc;
-    //         if (r >= 0 && r < 5 && c >= 0 && c < 5) {
-    //             EXPECT_NE(getUnit(r, c).getUnitType(), UnitType::MINE);
-    //         }
-    //     }
-    // }
+        printBoardState();
+    }
 }
 
-// 点击空格后展开
+// 测试点击空白格后的展开逻辑
 TEST_F(GameBoardTest, RevealEmptyTile_ExpandsCorrectly) {
-    board->reset(3, 3, 1); // 一个雷
-    board->revealMines(2, 2); // 首次展开格子
+    board->reset(3, 3, 1);
 
+    // 首次点击（触发雷生成）
+    safeFirstClick();
+    printBoardState(); // 调试用
+
+    // 现在可以获取雷的位置
+    QList<QPoint> mines = getMinePositions();
+    ASSERT_EQ(mines.size(), 1) << "雷应在首次点击后生成";
+
+    // 找到另一个安全位置测试展开逻辑
+    QPoint testPos;
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) {
+            if (!mines.contains(QPoint(r,c)) && getUnit(r,c).isCovered()) {
+                testPos = QPoint(r, c);
+                break;
+            }
+        }
+    }
+
+    // 点击测试位置
+    reveal(testPos.x(), testPos.y());
+    printBoardState();
+
+    // 验证展开效果
     int revealedCount = countRevealedCells();
-    EXPECT_GT(revealedCount, 1); // 揭开多个格子
+    EXPECT_GT(revealedCount, 1) << "应展开多个格子";
 }
+
 
 // 所有数字是否正确反映相邻雷数量
 TEST_F(GameBoardTest, RevealMines_SetsCorrectNumbers) {
@@ -127,17 +194,60 @@ TEST_F(GameBoardTest, RevealMines_SetsCorrectNumbers) {
     }
 }
 
-// 点击雷触发失败
-TEST_F(GameBoardTest, ClickOnMine_SetsGameToFailure) {
-    board->reset(3, 3, 1); // 1 个雷
-    board->revealMines(0, 0); // 生成雷
-    board->toggleFlags(0, 0); // 去掉标记以触发失败
+// // 点击雷触发失败
+// TEST_F(GameBoardTest, ClickOnMine_SetsGameToFailure) {
+//     board->reset(3, 3, 1); // 1 个雷
+//     board->revealMines(0, 0); // 生成雷
+//     board->toggleFlags(0, 0); // 去掉标记以触发失败
+//
+//     board->revealMines(0, 0); // 点击雷格
+//
+//     EXPECT_EQ(board->getGameStatus(), GameStatus::FAILURE);
+//     EXPECT_EQ(getUnit(0, 0).isTouched(), true);
+// }
 
-    board->revealMines(0, 0); // 点击雷格
+TEST_F(GameBoardTest, ClickOnMineAfterInitialization) {
+    // 合法配置：4x4网格（避开3x3限制），1个雷
+    const int safeSize = 4;
+    board->reset(safeSize, safeSize, 1);
 
+    // 第一阶段：生成雷区（通过首次点击安全位置）
+    board->revealMines(1, 1); // 中心点击确保安全
+
+    // 找到雷的位置（必须通过现有API遍历）
+    QPoint minePos(-1, -1);
+    for (int r = 0; r < safeSize; ++r) {
+        for (int c = 0; c < safeSize; ++c) {
+            if (getUnit(r, c).getUnitType() == UnitType::MINE) {
+                minePos = QPoint(r, c);
+                break;
+            }
+        }
+        if (minePos.x() != -1) break;
+    }
+    ASSERT_NE(minePos.x(), -1) << "No mine generated after first click";
+
+    // 第二阶段：触发雷
+    board->revealMines(minePos.x(), minePos.y());
+
+    // 验证状态
     EXPECT_EQ(board->getGameStatus(), GameStatus::FAILURE);
-    EXPECT_EQ(getUnit(0, 0).isTouched(), true);
+    EXPECT_TRUE(getUnit(minePos.x(), minePos.y()).isTouched());
+
+    // 附加验证：所有雷应被揭示
+    bool allMinesRevealed = true;
+    for (int r = 0; r < safeSize; ++r) {
+        for (int c = 0; c < safeSize; ++c) {
+            if (getUnit(r, c).getUnitType() == UnitType::MINE &&
+                getUnit(r, c).isCovered()) {
+                allMinesRevealed = false;
+                break;
+                }
+        }
+    }
+    EXPECT_TRUE(allMinesRevealed);
 }
+
 
 // 胜利条件：所有非雷格子揭开
 TEST_F(GameBoardTest, AllNonMinesRevealed_TriggersWin) {

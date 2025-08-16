@@ -1,5 +1,5 @@
 set(CMAKE_AUTOMOC ON)
-
+include(CTest)
 enable_testing()
 
 include(GoogleTest)
@@ -15,11 +15,13 @@ function(add_test_executable TARGET_NAME)
 
             ${CORE_INCLUDE_DIR}
             ${UTILS_INCLUDE_DIR}
-#            ${Qt6Core_INCLUDE_DIRS}
+            ${Qt6Core_INCLUDE_DIRS}
 
     )
     target_link_libraries(${TARGET_NAME} PRIVATE
             Qt::Core
+            Qt::Gui
+            Qt::Test
             GTest::gtest_main
 
     )
@@ -43,4 +45,7 @@ add_test_executable(gameboard_test
 
 
 
-#add_executable(resouseloader utils/resouceloader_test.cpp)
+add_test_executable(resouseloader_test utils/resouceloader_test.cpp
+        ${UTILS_SOURCES_DIR}/resourceloader.cpp
+        ${CMAKE_SOURCE_DIR}/resources/resources.qrc
+)
