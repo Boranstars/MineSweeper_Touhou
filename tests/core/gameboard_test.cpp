@@ -194,17 +194,7 @@ TEST_F(GameBoardTest, RevealMines_SetsCorrectNumbers) {
     }
 }
 
-// // 点击雷触发失败
-// TEST_F(GameBoardTest, ClickOnMine_SetsGameToFailure) {
-//     board->reset(3, 3, 1); // 1 个雷
-//     board->revealMines(0, 0); // 生成雷
-//     board->toggleFlags(0, 0); // 去掉标记以触发失败
-//
-//     board->revealMines(0, 0); // 点击雷格
-//
-//     EXPECT_EQ(board->getGameStatus(), GameStatus::FAILURE);
-//     EXPECT_EQ(getUnit(0, 0).isTouched(), true);
-// }
+
 
 TEST_F(GameBoardTest, ClickOnMineAfterInitialization) {
     const int safeSize = 4;

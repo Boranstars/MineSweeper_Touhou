@@ -84,11 +84,9 @@ namespace MineSweeperTouHou {
 
 
             }
-            else if (1 || mineMap[row][col].getUnitType() == UnitType::EMPTY)
-            {
-                // 为空的话就递归的揭开周围格子
-                revealMinesRecursive(row, col);
-            }
+
+            revealMinesRecursive(row, col);
+
             // 发送信号让sceneWidget重绘
             emit stateChanged();
 
